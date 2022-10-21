@@ -1,11 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
+import 'package:ilista_compras_app/app/core/env/env.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/button_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/colors_app.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/text_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/widgets/button.dart';
 import 'package:ilista_compras_app/app/models/listagem_compra/compra_model.dart';
+import 'package:ilista_compras_app/app/models/usuario/usuario.dart';
 import 'package:ilista_compras_app/app/utils/constantes_app.dart';
+import 'package:ilista_compras_app/app/core/ui/widgets/status_tile.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,98 +62,104 @@ class _HomePageState extends State<HomePage> {
     CompraModel(idCompra: 4, dataCompra: DateTime.now(), localCompra: 'Comper'),
   ];
 
+  Usuario usuario = Usuario(
+    nomeUsuario: Env.i['nome_usuario'],
+    //dataUltimoAcesso: 2022' as DateTime,
+    avatar: Env.i['avatar'],
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorsApp.i.primary,
-        appBar: AppBar(
-          backgroundColor: context.colors.primary,
-          elevation: 3,
-          title: Text(ConstantesApp.i.tituloAplicacao),
-          titleTextStyle: TextStyles.i.textPrimaryFontBold.copyWith(
-              color: ColorsApp.i.yellowLittle,
-              fontSize: ConstantesApp.i.tamanhoFonteAppBarHome.toDouble()),
-        ),
-        drawer: Drawer(
-          backgroundColor: context.colors.white,
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: context.colors.greyDark,
-                ),
-                child: Text(
-                  'Opções',
+      backgroundColor: ColorsApp.i.primary,
+      appBar: AppBar(
+        backgroundColor: context.colors.primary,
+        elevation: 3,
+        title: Text(ConstantesApp.i.tituloHome),
+        titleTextStyle: TextStyles.i.textPrimaryFontBold.copyWith(
+            color: ColorsApp.i.white,
+            fontSize: ConstantesApp.i.tamanhoFonteAppBarHome.toDouble()),
+      ),
+      drawer: Drawer(
+        backgroundColor: context.colors.white,
+        child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: context.colors.greyDark,
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'Olá ${usuario.nomeUsuario}',
                   style: TextStyle(
-                    color: context.colors.yellowLittle,
-                    fontSize: 24,
-                  ),
+                      color: context.colors.yellowLittle, fontSize: 24),
                 ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.list),
-                title: const Text('Nova Compra'),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/novalista');
+                Container(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  width: 105,
+                  child: Image.asset(
+                    'assets/images/flavio_avatar_small.png',
+                    fit: BoxFit.cover,
+                  ),
+                )
+                // StatusTile(
+                //   icon: Image.asset('assets/images/flavio_avatar_small.png'),
+                //   label: 'Olá ${usuario.nomeUsuario}',
+                //   value: 0,
+                // ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.list),
+            title: const Text('Nova Compra'),
+            onTap: () {
+              Navigator.of(context).pushNamed('/novalista');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: const Text('Configurações'),
+            onTap: (() {}),
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Sair'),
+            onTap: (() {}),
+          ),
+        ]),
+      ),
+      body: Form(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: lista.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    elevation: 3,
+                    color: context.colors.black,
+                    child: ListTile(
+                      title: Text(
+                        'Lista ${lista[index].idCompra} - ${lista[index].dataCompra.toString()} , ${lista[index].localCompra}',
+                        style: context.textStyles.textPrimaryFontSemiBold
+                            .copyWith(color: context.colors.white),
+                      ),
+                      leading: Image.asset('assets/images/all_icon.png'),
+                      selected: true,
+                      tileColor: context.colors.greyDark,
+                      onTap: () {
+                        const SnackBar(content: Text('Marcar'));
+                      },
+                    ),
+                  );
                 },
-              ),
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Configurações'),
-                onTap: (() {}),
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Sair'),
-                onTap: (() {}),
               ),
             ],
           ),
         ),
-        body: Form(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: lista.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      elevation: 3,
-                      color: context.colors.yellowSuperLittle,
-                      child: ListTile(
-                        title: Text(
-                          'Lista ${lista[index].idCompra} - ${lista[index].dataCompra.toString()} , ${lista[index].localCompra}',
-                          style: context.textStyles.textPrimaryFontSemiBold,
-                        ),
-                        leading: const Icon(Icons.add_task_outlined),
-                        selected: true,
-                        onTap: () {
-                          const SnackBar(content: Text('Marcar'));
-                        },
-                      ),
-                    );
-                  },
-                ),
-                // Align(
-                //   alignment: Alignment.bottomCenter,
-                //   child: Button(
-                //     width: MediaQuery.of(context).size.height * .9,
-                //     onPressed: () {
-                //       Navigator.of(context).pushNamedAndRemoveUntil(
-                //           '/novalista', (route) => false);
-                //     },
-                //     style: ButtonStyles.i.yellowOutLineButton,
-                //     labelStyle: TextStyles.i.textPrimaryFontBold
-                //         .copyWith(color: context.colors.yellow),
-                //     label: 'Nova Lista',
-                //     outline: false,
-                //   ),
-                // )
-              ],
-            ),
-          ),
-        ));
+      ),
+    );
   }
 }

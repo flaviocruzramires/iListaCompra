@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ilista_compras_app/app/services/lista_compras_app.dart';
+import 'package:ilista_compras_app/app/core/env/env.dart';
 
-void main() {
+Future<void> main() async {
+  await Env.i.load();
   runApp(ListaComprasApp());
 }

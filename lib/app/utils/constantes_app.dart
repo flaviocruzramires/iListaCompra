@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/widgets.dart';
 
 class ConstantesApp {
@@ -12,6 +10,7 @@ class ConstantesApp {
   }
 
   String get tituloAplicacao => 'Lista de Compras';
+  String get tituloHome => 'Últimas listas';
   String get tituloCadastro => 'Nova Lista Compras';
 
   int get tamanhoFonteTituloAplicacao => 26;
