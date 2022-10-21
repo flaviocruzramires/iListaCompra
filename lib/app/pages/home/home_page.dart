@@ -68,8 +68,45 @@ class _HomePageState extends State<HomePage> {
           elevation: 3,
           title: Text(ConstantesApp.i.tituloAplicacao),
           titleTextStyle: TextStyles.i.textPrimaryFontBold.copyWith(
-              color: ColorsApp.i.yellow,
+              color: ColorsApp.i.yellowLittle,
               fontSize: ConstantesApp.i.tamanhoFonteAppBarHome.toDouble()),
+        ),
+        drawer: Drawer(
+          backgroundColor: context.colors.white,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: context.colors.greyDark,
+                ),
+                child: Text(
+                  'Opções',
+                  style: TextStyle(
+                    color: context.colors.yellowLittle,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.list),
+                title: const Text('Nova Compra'),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/novalista');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Configurações'),
+                onTap: (() {}),
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Sair'),
+                onTap: (() {}),
+              ),
+            ],
+          ),
         ),
         body: Form(
           child: SingleChildScrollView(
@@ -81,32 +118,36 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (BuildContext context, int index) {
                     return Card(
                       elevation: 3,
-                      color: context.colors.yellowLittle,
+                      color: context.colors.yellowSuperLittle,
                       child: ListTile(
                         title: Text(
                           'Lista ${lista[index].idCompra} - ${lista[index].dataCompra.toString()} , ${lista[index].localCompra}',
                           style: context.textStyles.textPrimaryFontSemiBold,
                         ),
                         leading: const Icon(Icons.add_task_outlined),
+                        selected: true,
+                        onTap: () {
+                          const SnackBar(content: Text('Marcar'));
+                        },
                       ),
                     );
                   },
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Button(
-                    width: MediaQuery.of(context).size.height * .9,
-                    onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/novalista', (route) => false);
-                    },
-                    style: ButtonStyles.i.yellowOutLineButton,
-                    labelStyle: TextStyles.i.textPrimaryFontBold
-                        .copyWith(color: context.colors.yellow),
-                    label: 'Nova Lista',
-                    outline: false,
-                  ),
-                )
+                // Align(
+                //   alignment: Alignment.bottomCenter,
+                //   child: Button(
+                //     width: MediaQuery.of(context).size.height * .9,
+                //     onPressed: () {
+                //       Navigator.of(context).pushNamedAndRemoveUntil(
+                //           '/novalista', (route) => false);
+                //     },
+                //     style: ButtonStyles.i.yellowOutLineButton,
+                //     labelStyle: TextStyles.i.textPrimaryFontBold
+                //         .copyWith(color: context.colors.yellow),
+                //     label: 'Nova Lista',
+                //     outline: false,
+                //   ),
+                // )
               ],
             ),
           ),
