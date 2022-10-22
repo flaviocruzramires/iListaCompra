@@ -1,9 +1,11 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/button_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/colors_app.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/text_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/widgets/button.dart';
 import 'package:ilista_compras_app/app/utils/constantes_app.dart';
+//import 'package:ilista_compras_app/app/utils/funcoes_app.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -31,6 +33,7 @@ class SplashPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+            //Text(FuncoesApp.formataDataPadraoBR(DateTime.now())),
             const SizedBox(
               height: 20,
             ),

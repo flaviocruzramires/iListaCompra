@@ -9,6 +9,7 @@ import 'package:ilista_compras_app/app/models/listagem_compra/compra_model.dart'
 import 'package:ilista_compras_app/app/models/usuario/usuario.dart';
 import 'package:ilista_compras_app/app/utils/constantes_app.dart';
 import 'package:ilista_compras_app/app/core/ui/widgets/status_tile.dart';
+import 'package:ilista_compras_app/app/utils/funcoes_app.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
@@ -74,6 +75,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: ColorsApp.i.primary,
       appBar: AppBar(
         backgroundColor: context.colors.primary,
+        iconTheme: IconThemeData(color: context.colors.white), // IconThemeData,
         elevation: 3,
         title: Text(ConstantesApp.i.tituloHome),
         titleTextStyle: TextStyles.i.textPrimaryFontBold.copyWith(
@@ -85,7 +87,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(padding: EdgeInsets.zero, children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: context.colors.greyDark,
+              color: context.colors.primary,
             ),
             child: Column(
               children: [
@@ -139,14 +141,18 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     elevation: 3,
-                    color: context.colors.black,
+                    color: context.colors.primary,
                     child: ListTile(
                       title: Text(
-                        'Lista ${lista[index].idCompra} - ${lista[index].dataCompra.toString()} , ${lista[index].localCompra}',
+                        '${FuncoesApp.formataDataPadraoBR(lista[index].dataCompra!)} - ${lista[index].localCompra}',
+                        //'Lista ${lista[index].idCompra} - ${lista[index].dataCompra} , ${lista[index].localCompra}',
                         style: context.textStyles.textPrimaryFontSemiBold
                             .copyWith(color: context.colors.white),
                       ),
-                      leading: Image.asset('assets/images/all_icon.png'),
+                      leading: Icon(
+                        Icons.payment,
+                        color: context.colors.white,
+                      ),
                       selected: true,
                       tileColor: context.colors.greyDark,
                       onTap: () {
