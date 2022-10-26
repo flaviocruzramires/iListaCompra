@@ -6,11 +6,14 @@ import 'package:ilista_compras_app/app/core/ui/styles/colors_app.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/text_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/widgets/button.dart';
 import 'package:ilista_compras_app/app/models/listagem_compra/compra_model.dart';
+import 'package:ilista_compras_app/app/models/usuario/presenter/usuario_presenter.dart';
 import 'package:ilista_compras_app/app/models/usuario/usuario.dart';
+import 'package:ilista_compras_app/app/services/database/database_helper.dart';
 import 'package:ilista_compras_app/app/utils/constantes_app.dart';
 import 'package:ilista_compras_app/app/core/ui/widgets/status_tile.dart';
 import 'package:ilista_compras_app/app/utils/funcoes_app.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,6 +24,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late DateTime? dataSelecionada = DateTime.now();
+
+  final dbHelper = DatabaseHelper.instance;
 
 //  static int get length => null;
 
@@ -55,22 +60,99 @@ class _HomePageState extends State<HomePage> {
   // ItensCompra ic1 =
   //     ItensCompra(listaCompra: null, quantidade: 30, produto: 'Heineken');
 
-  final lista = [
-    CompraModel(idCompra: 1, dataCompra: DateTime.now(), localCompra: 'Assai'),
-    CompraModel(idCompra: 2, dataCompra: DateTime.now(), localCompra: 'Comper'),
-    CompraModel(
-        idCompra: 3, dataCompra: DateTime.now(), localCompra: 'Atacadao'),
-    CompraModel(idCompra: 4, dataCompra: DateTime.now(), localCompra: 'Comper'),
-  ];
+  // final lista = [
+  //   CompraModel(idCompra: 1, dataCompra: DateTime.now(), localCompra: 'Assai'),
+  //   CompraModel(idCompra: 2, dataCompra: DateTime.now(), localCompra: 'Comper'),
+  //   CompraModel(
+  //       idCompra: 3, dataCompra: DateTime.now(), localCompra: 'Atacadao'),
+  //   CompraModel(idCompra: 4, dataCompra: DateTime.now(), localCompra: 'Comper'),
+  // ];
 
-  Usuario usuario = Usuario(
-    nomeUsuario: Env.i['nome_usuario'],
-    //dataUltimoAcesso: 2022' as DateTime,
-    avatar: Env.i['avatar'],
-  );
+  // Future<Database> db = DatabaseHelper.instance.database;
+  // Usuario? usuario;
+  // Future<List<Map<String, dynamic>>> queryAllRows() async {
+  //   Database db = await DatabaseHelper.instance.database;
+  //   return await db.query('usuario');
+  // }
+
+  getDadosUsuario() async {
+    UsuarioPresenter? usuarioPresenter;
+    return await usuarioPresenter?.obterDadosUsuario();
+  }
+
+  // Future<void> povoaObjetoDoEnv() async {
+  //   usuario!.nomeUsuario = Env.i['nome_usuario'];
+  // }
+
+  // Future<void> povoaObjeto() async {
+  //   final ds = await queryAllRows();
+
+  //   for (var element in ds) {
+  //     usuario!.nomeUsuario = element['nome_usuario'];
+  //   }
+  // }
+
+  getwidgetDrawer() {
+    return Drawer(
+      backgroundColor: context.colors.white,
+      child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+        DrawerHeader(
+          decoration: BoxDecoration(
+            color: context.colors.primary,
+          ),
+          child: FutureBuilder(
+            future: getDadosUsuario(),
+            builder: (context, snapshot) {
+              return Column(
+                children: [
+                  Text(
+                    'Nome: ${snapshot.data} ',
+                    style: TextStyle(
+                        color: context.colors.yellowLittle, fontSize: 24),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    width: 105,
+                    child: Image.asset(
+                      'assets/images/flavio_avatar_small.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                  // StatusTile(
+                  //   icon: Image.asset('assets/images/flavio_avatar_small.png'),
+                  //   label: 'Olá ${usuario.nomeUsuario}',
+                  //   value: 0,
+                  // ),
+                ],
+              );
+            },
+          ),
+        ),
+        ListTile(
+          leading: const Icon(Icons.list),
+          title: const Text('Nova Compra'),
+          onTap: () {
+            Navigator.of(context).pushNamed('/novalista');
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.settings),
+          title: const Text('Configurações'),
+          onTap: (() {}),
+        ),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Sair'),
+          onTap: (() {}),
+        ),
+      ]),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    // povoaObjeto();
+
     return Scaffold(
       backgroundColor: ColorsApp.i.primary,
       appBar: AppBar(
@@ -82,69 +164,22 @@ class _HomePageState extends State<HomePage> {
             color: ColorsApp.i.white,
             fontSize: ConstantesApp.i.tamanhoFonteAppBarHome.toDouble()),
       ),
-      drawer: Drawer(
-        backgroundColor: context.colors.white,
-        child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: context.colors.primary,
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'Olá ${usuario.nomeUsuario}',
-                  style: TextStyle(
-                      color: context.colors.yellowLittle, fontSize: 24),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  width: 105,
-                  child: Image.asset(
-                    'assets/images/flavio_avatar_small.png',
-                    fit: BoxFit.cover,
-                  ),
-                )
-                // StatusTile(
-                //   icon: Image.asset('assets/images/flavio_avatar_small.png'),
-                //   label: 'Olá ${usuario.nomeUsuario}',
-                //   value: 0,
-                // ),
-              ],
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.list),
-            title: const Text('Nova Compra'),
-            onTap: () {
-              Navigator.of(context).pushNamed('/novalista');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Configurações'),
-            onTap: (() {}),
-          ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Sair'),
-            onTap: (() {}),
-          ),
-        ]),
-      ),
+      drawer: getwidgetDrawer(),
       body: Form(
         child: SingleChildScrollView(
           child: Column(
             children: [
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: lista.length,
+                itemCount: 3,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
                     elevation: 3,
                     color: context.colors.primary,
                     child: ListTile(
                       title: Text(
-                        '${FuncoesApp.formataDataPadraoBR(lista[index].dataCompra!)} - ${lista[index].localCompra}',
+                        'AQUI VAI O BANCO',
+                        //'${FuncoesApp.formataDataPadraoBR(lista[index].dataCompra!)} - ${lista[index].localCompra}',
                         //'Lista ${lista[index].idCompra} - ${lista[index].dataCompra} , ${lista[index].localCompra}',
                         style: context.textStyles.textPrimaryFontSemiBold
                             .copyWith(color: context.colors.white),

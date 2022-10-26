@@ -5,10 +5,14 @@ import 'package:ilista_compras_app/app/pages/home/home_page.dart';
 import 'package:ilista_compras_app/app/pages/splash/splash_page.dart';
 import 'package:ilista_compras_app/app/utils/constantes_app.dart';
 import 'package:ilista_compras_app/app/models/usuario/usuario.dart';
+import 'package:sqflite/sqflite.dart';
 import '../pages/novalista/nova_lista.dart';
+import 'database/database_helper.dart';
 
 class ListaComprasApp extends StatelessWidget {
   final navigatorKey = GlobalKey<NavigatorState>();
+
+  final dbHelper = DatabaseHelper.instance;
   ListaComprasApp({super.key});
 
   @override
