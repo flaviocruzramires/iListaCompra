@@ -6,8 +6,8 @@ class UsuarioPresenter {
   String tabela = ConstantesApp.i.nometabelaUsuario;
 
   obterDadosUsuario() async {
-    Database db = DatabaseHelper.instance.database();
-    return await db.query(tabela);
+    // Database db = DatabaseHelper.instance.getdatabase();
+    // return await db.query(tabela);
   }
 
 //  static var result;

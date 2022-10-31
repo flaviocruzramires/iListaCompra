@@ -14,7 +14,8 @@ class ConstantesApp {
   String get tituloCadastro => 'Nova Lista Compras';
 
   // ================================================
-  String get nomeDoBancoDeDados => 'listaDeCompras.db';
+  String get nomeDoBancoDeDados => 'DBlistaDeCompras.db';
+  int get versaoDoBancoDeDados => 1;
 
   // Inicio tabela compras
   String get nomeTabelaCompras => 'compras';

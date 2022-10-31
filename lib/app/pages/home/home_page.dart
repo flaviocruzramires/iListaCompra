@@ -5,12 +5,15 @@ import 'package:ilista_compras_app/app/core/ui/styles/button_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/colors_app.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/text_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/widgets/button.dart';
+import 'package:ilista_compras_app/app/core/ui/widgets/snackbar_custom.dart';
 import 'package:ilista_compras_app/app/models/listagem_compra/compra_model.dart';
 import 'package:ilista_compras_app/app/models/usuario/presenter/usuario_presenter.dart';
 import 'package:ilista_compras_app/app/models/usuario/usuario.dart';
+import 'package:ilista_compras_app/app/services/database/dao/compra_dao.dart';
 import 'package:ilista_compras_app/app/services/database/database_helper.dart';
 import 'package:ilista_compras_app/app/utils/constantes_app.dart';
 import 'package:ilista_compras_app/app/core/ui/widgets/status_tile.dart';
+import 'package:ilista_compras_app/app/utils/enums_app.dart';
 import 'package:ilista_compras_app/app/utils/funcoes_app.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
@@ -25,7 +28,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late DateTime? dataSelecionada = DateTime.now();
 
-  final dbHelper = DatabaseHelper.instance;
+  final CompraDao _dao = CompraDao();
+
+  // final dbHelper = DatabaseHelper.instance;
 
 //  static int get length => null;
 
@@ -37,60 +42,10 @@ class _HomePageState extends State<HomePage> {
     return dataSelecionada;
   }
 
-  // ignore: non_constant_identifier_names
-  // GeraListaCompra aaaaa;
-  // aaaaa.Execute();
-
-  // List<String> entries = <String>[
-  //   '19/10/2022 - Assai',
-  //   '21/10/2022 - Pires',
-  //   '25/10/2022 - Mourão'
-  // ];
-  // List<int> colorsCodes = <int>[600, 500, 100];
-
-  // CompraModel cp1 = CompraModel(
-  //     idCompra: 1, dataCompra: '01/01/2021' as DateTime, localCompra: 'Assai');
-  // CompraModel cp2 = CompraModel(
-  //     idCompra: 2,
-  //     dataCompra: '01/02/2021' as DateTime,
-  //     localCompra: 'Atacadão');
-  // CompraModel cp3 = CompraModel(
-  //     idCompra: 3, dataCompra: '01/04/2021' as DateTime, localCompra: 'Assai');
-
-  // ItensCompra ic1 =
-  //     ItensCompra(listaCompra: null, quantidade: 30, produto: 'Heineken');
-
-  // final lista = [
-  //   CompraModel(idCompra: 1, dataCompra: DateTime.now(), localCompra: 'Assai'),
-  //   CompraModel(idCompra: 2, dataCompra: DateTime.now(), localCompra: 'Comper'),
-  //   CompraModel(
-  //       idCompra: 3, dataCompra: DateTime.now(), localCompra: 'Atacadao'),
-  //   CompraModel(idCompra: 4, dataCompra: DateTime.now(), localCompra: 'Comper'),
-  // ];
-
-  // Future<Database> db = DatabaseHelper.instance.database;
-  // Usuario? usuario;
-  // Future<List<Map<String, dynamic>>> queryAllRows() async {
-  //   Database db = await DatabaseHelper.instance.database;
-  //   return await db.query('usuario');
-  // }
-
   getDadosUsuario() async {
-    UsuarioPresenter? usuarioPresenter;
-    return await usuarioPresenter?.obterDadosUsuario();
+    // UsuarioPresenter? usuarioPresenter;
+    // return await usuarioPresenter?.obterDadosUsuario();
   }
-
-  // Future<void> povoaObjetoDoEnv() async {
-  //   usuario!.nomeUsuario = Env.i['nome_usuario'];
-  // }
-
-  // Future<void> povoaObjeto() async {
-  //   final ds = await queryAllRows();
-
-  //   for (var element in ds) {
-  //     usuario!.nomeUsuario = element['nome_usuario'];
-  //   }
-  // }
 
   getwidgetDrawer() {
     return Drawer(
@@ -118,11 +73,6 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.cover,
                     ),
                   )
-                  // StatusTile(
-                  //   icon: Image.asset('assets/images/flavio_avatar_small.png'),
-                  //   label: 'Olá ${usuario.nomeUsuario}',
-                  //   value: 0,
-                  // ),
                 ],
               );
             },
@@ -138,7 +88,9 @@ class _HomePageState extends State<HomePage> {
         ListTile(
           leading: const Icon(Icons.settings),
           title: const Text('Configurações'),
-          onTap: (() {}),
+          onTap: (() {
+            Navigator.of(context).pushNamed('/configuracoes');
+          }),
         ),
         ListTile(
           leading: const Icon(Icons.logout),
@@ -146,6 +98,77 @@ class _HomePageState extends State<HomePage> {
           onTap: (() {}),
         ),
       ]),
+    );
+  }
+
+  getListViewDadosCompras() {
+    return Column(
+      children: [
+        FutureBuilder<List<CompraModel>>(
+            initialData: [],
+            future: _dao.findAll(),
+            builder: (context, snapshot) {
+              final List<CompraModel>? compras = snapshot.data;
+              return Column(
+                children: <Widget>[
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: compras!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final CompraModel compra = compras[index];
+                      return Card(
+                        elevation: 3,
+                        color: context.colors.primary,
+                        child: ListTile(
+                          title: Text(
+                            compra.localCompra!,
+                            //'${FuncoesApp.formataDataPadraoBR(lista[index].dataCompra!)} - ${lista[index].localCompra}',
+                            //'Lista ${lista[index].idCompra} - ${lista[index].dataCompra} , ${lista[index].localCompra}',
+                            style: context.textStyles.textPrimaryFontSemiBold
+                                .copyWith(color: context.colors.white),
+                          ),
+                          leading: Icon(
+                            Icons.payment,
+                            color: context.colors.white,
+                          ),
+                          selected: true,
+                          tileColor: context.colors.greyDark,
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Column(
+                                  children: <Widget>[
+                                    ListTile(
+                                      leading: Icon(
+                                        Icons.info,
+                                        color: ColorsApp.i.white,
+                                      ),
+                                      title: Text(
+                                        'Titulo',
+                                        style: TextStyle(
+                                          color: ColorsApp.i.white,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        'Titulo',
+                                        style: TextStyle(
+                                          color: ColorsApp.i.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              );
+            }),
+      ],
     );
   }
 
@@ -166,40 +189,7 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: getwidgetDrawer(),
       body: Form(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 3,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    elevation: 3,
-                    color: context.colors.primary,
-                    child: ListTile(
-                      title: Text(
-                        'AQUI VAI O BANCO',
-                        //'${FuncoesApp.formataDataPadraoBR(lista[index].dataCompra!)} - ${lista[index].localCompra}',
-                        //'Lista ${lista[index].idCompra} - ${lista[index].dataCompra} , ${lista[index].localCompra}',
-                        style: context.textStyles.textPrimaryFontSemiBold
-                            .copyWith(color: context.colors.white),
-                      ),
-                      leading: Icon(
-                        Icons.payment,
-                        color: context.colors.white,
-                      ),
-                      selected: true,
-                      tileColor: context.colors.greyDark,
-                      onTap: () {
-                        const SnackBar(content: Text('Marcar'));
-                      },
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+        child: SingleChildScrollView(child: getListViewDadosCompras()),
       ),
     );
   }

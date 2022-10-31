@@ -1,9 +1,5 @@
-
 // fu-cl
 
+enum ThemeEnum { themeEnumDark, themeEnumWhite }
 
-//   enum theme_enum (
-//     themeEnumDark,
-//     themeEnumWhite
-//   )
-
+enum TipoMensagem { erroMensagem, informacaoMensagem, perguntaMensagem }

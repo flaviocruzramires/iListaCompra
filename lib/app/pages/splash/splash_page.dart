@@ -4,7 +4,9 @@ import 'package:ilista_compras_app/app/core/ui/styles/button_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/colors_app.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/text_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/widgets/button.dart';
+import 'package:ilista_compras_app/app/services/database/database_helper.dart';
 import 'package:ilista_compras_app/app/utils/constantes_app.dart';
+import 'package:sqflite/sqflite.dart';
 //import 'package:ilista_compras_app/app/utils/funcoes_app.dart';
 
 class SplashPage extends StatelessWidget {
