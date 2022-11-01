@@ -35,24 +35,25 @@ class ListaComprasApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //criarTabelas();
-    povoarTabelasValoresDefault();
-    return FlutterGetItApplicationBinding(
-        bindingsBuilder: () => [
-              Bind.lazySingleton<Usuario>((i) => Usuario()),
-            ],
-        child: MaterialApp(
-          title: ConstantesApp.i.tituloAplicacao,
-          navigatorKey: navigatorKey,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeConfig.theme,
-          routes: {
-            '/': (_) => const SplashPage(),
-            // '/auth/login': (_) => const LoginRoute(),
-            // '/auth/register': (_) => const RegisterRoute(),
-            '/home': (_) => const HomePage(),
-            '/novalista': (_) => const NovaLista(),
-            '/configuracoes': (_) => const ConfiguracoesApp(),
-          },
-        ));
+    //povoarTabelasValoresDefault();
+    return
+        // FlutterGetItApplicationBinding(
+        //     bindingsBuilder: () => [
+        //           // Bind.lazySingleton<Usuario>((i) => Usuario()),
+        //         ],
+        MaterialApp(
+      title: ConstantesApp.i.tituloAplicacao,
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeConfig.theme,
+      routes: {
+        '/': (_) => const SplashPage(),
+        // '/auth/login': (_) => const LoginRoute(),
+        // '/auth/register': (_) => const RegisterRoute(),
+        '/home': (_) => const HomePage(),
+        '/novalista': (_) => const NovaLista(),
+        '/configuracoes': (_) => const ConfiguracoesApp(),
+      },
+    );
   }
 }

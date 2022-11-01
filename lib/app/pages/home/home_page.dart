@@ -1,22 +1,24 @@
-// ignore_for_file: non_constant_identifier_names
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:ilista_compras_app/app/core/env/env.dart';
-import 'package:ilista_compras_app/app/core/ui/styles/button_styles.dart';
+// import 'package:ilista_compras_app/app/core/env/env.dart';
+// import 'package:ilista_compras_app/app/core/ui/styles/button_styles.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/colors_app.dart';
 import 'package:ilista_compras_app/app/core/ui/styles/text_styles.dart';
-import 'package:ilista_compras_app/app/core/ui/widgets/button.dart';
-import 'package:ilista_compras_app/app/core/ui/widgets/snackbar_custom.dart';
+// import 'package:ilista_compras_app/app/core/ui/widgets/button.dart';
+// import 'package:ilista_compras_app/app/core/ui/widgets/snackbar_custom.dart';
 import 'package:ilista_compras_app/app/models/listagem_compra/compra_model.dart';
-import 'package:ilista_compras_app/app/models/usuario/presenter/usuario_presenter.dart';
+// import 'package:ilista_compras_app/app/models/usuario/presenter/usuario_presenter.dart';
 import 'package:ilista_compras_app/app/models/usuario/usuario.dart';
 import 'package:ilista_compras_app/app/services/database/dao/compra_dao.dart';
-import 'package:ilista_compras_app/app/services/database/database_helper.dart';
+// import 'package:ilista_compras_app/app/services/database/database_helper.dart';
 import 'package:ilista_compras_app/app/utils/constantes_app.dart';
-import 'package:ilista_compras_app/app/core/ui/widgets/status_tile.dart';
-import 'package:ilista_compras_app/app/utils/enums_app.dart';
-import 'package:ilista_compras_app/app/utils/funcoes_app.dart';
-import 'package:intl/intl.dart';
-import 'package:sqflite/sqflite.dart';
+// import 'package:ilista_compras_app/app/core/ui/widgets/status_tile.dart';
+// import 'package:ilista_compras_app/app/utils/enums_app.dart';
+// import 'package:ilista_compras_app/app/utils/funcoes_app.dart';
+// import 'package:intl/intl.dart';
+// import 'package:sqflite/sqflite.dart';
+
+import '../../services/database/dao/usuario_dao.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   late DateTime? dataSelecionada = DateTime.now();
 
   final CompraDao _dao = CompraDao();
+  final UsuarioDao _daoUsuario = UsuarioDao();
 
   // final dbHelper = DatabaseHelper.instance;
 
@@ -42,42 +45,44 @@ class _HomePageState extends State<HomePage> {
     return dataSelecionada;
   }
 
-  getDadosUsuario() async {
-    // UsuarioPresenter? usuarioPresenter;
-    // return await usuarioPresenter?.obterDadosUsuario();
-  }
+  // Usuario getUsuario() {
+  //   final Usuario usuario = Usuario();
+  //   final UsuarioDao _daoUsuario = UsuarioDao();
 
-  getwidgetDrawer() {
+  //   Future<List<Usuario>> _usuarios = _daoUsuario.findAll();
+  //   List<Usuario> _usr = [];
+  //   _usuarios.then((value) => _usr);
+  //   usuario.nomeUsuario = _usr[0].nomeUsuario;
+  //   usuario.emailUsuario = _usr[0].emailUsuario;
+
+  //   return usuario;
+  // }
+
+  getDrawerCustom() {
+    //final Usuario usr = getUsuario();
+    final Usuario usr = Usuario(
+        nomeUsuario: 'Flavio XUMBADO',
+        dataUltimoAcesso: getDataSelecionada(),
+        avatar: '',
+        emailUsuario: 'flavio@flavio.com.br',
+        senhaUsuario: '998877');
     return Drawer(
-      backgroundColor: context.colors.white,
-      child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+      backgroundColor: context.colors.grey,
+      child: Column(children: <Widget>[
         DrawerHeader(
-          decoration: BoxDecoration(
-            color: context.colors.primary,
-          ),
-          child: FutureBuilder(
-            future: getDadosUsuario(),
-            builder: (context, snapshot) {
-              return Column(
-                children: [
-                  Text(
-                    'Nome: ${snapshot.data} ',
-                    style: TextStyle(
-                        color: context.colors.yellowLittle, fontSize: 24),
-                  ),
-                  Container(
+            decoration: BoxDecoration(color: context.colors.grey),
+            child: Column(
+              children: [
+                Text('Olá ${usr.nomeUsuario}'),
+                Container(
                     padding: const EdgeInsets.only(bottom: 10),
                     width: 105,
                     child: Image.asset(
                       'assets/images/flavio_avatar_small.png',
                       fit: BoxFit.cover,
-                    ),
-                  )
-                ],
-              );
-            },
-          ),
-        ),
+                    )),
+              ],
+            )),
         ListTile(
           leading: const Icon(Icons.list),
           title: const Text('Nova Compra'),
@@ -187,7 +192,7 @@ class _HomePageState extends State<HomePage> {
             color: ColorsApp.i.white,
             fontSize: ConstantesApp.i.tamanhoFonteAppBarHome.toDouble()),
       ),
-      drawer: getwidgetDrawer(),
+      drawer: getDrawerCustom(),
       body: Form(
         child: SingleChildScrollView(child: getListViewDadosCompras()),
       ),

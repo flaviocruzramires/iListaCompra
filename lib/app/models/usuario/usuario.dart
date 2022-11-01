@@ -1,15 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/widgets.dart';
 //import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
 import 'package:ilista_compras_app/app/core/env/env.dart';
 
-// import 'package:ilista_compras_app/app/models/usuario/presenter/usuario_presenter.dart';
-// import 'package:ilista_compras_app/app/services/database/database_helper.dart';
-
-class Usuario extends WidgetsFlutterBinding {
+class Usuario {
   late final String? nomeUsuario;
   late final DateTime? dataUltimoAcesso;
   late final String? avatar;

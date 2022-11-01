@@ -9,7 +9,7 @@ povoarItemCompraValoresDefault() async {
     await db.rawInsert(
         'insert into ${ConstantesApp.i.nomeTabelaItensCompras} (${ConstantesApp.i.campoIdTabelaItensCompras}, ${ConstantesApp.i.campoIdTabelaComprasFk}, ${ConstantesApp.i.campoQuantidadeItensCompras} , ${ConstantesApp.i.campoProdutoItensCompras} , ${ConstantesApp.i.campoValorTotalItensCompras}  ) values (1 , 1 , 285 , "Palito de Fosforo", 3) ');
     await db.rawInsert(
-        'insert into ${ConstantesApp.i.nomeTabelaItensCompras} (${ConstantesApp.i.campoIdTabelaItensCompras}, ${ConstantesApp.i.campoIdTabelaComprasFk}, ${ConstantesApp.i.campoQuantidadeItensCompras} , ${ConstantesApp.i.campoProdutoItensCompras} , ${ConstantesApp.i.campoValorTotalItensCompras}  ) values (2 , 1 , 3 , "Picanha, 3) ');
+        'insert into ${ConstantesApp.i.nomeTabelaItensCompras} (${ConstantesApp.i.campoIdTabelaItensCompras}, ${ConstantesApp.i.campoIdTabelaComprasFk}, ${ConstantesApp.i.campoQuantidadeItensCompras} , ${ConstantesApp.i.campoProdutoItensCompras} , ${ConstantesApp.i.campoValorTotalItensCompras}  ) values (2 , 1 , 3 , "Picanha", 3) ');
     await db.rawInsert(
         'insert into ${ConstantesApp.i.nomeTabelaItensCompras} (${ConstantesApp.i.campoIdTabelaItensCompras}, ${ConstantesApp.i.campoIdTabelaComprasFk}, ${ConstantesApp.i.campoQuantidadeItensCompras} , ${ConstantesApp.i.campoProdutoItensCompras} , ${ConstantesApp.i.campoValorTotalItensCompras}  ) values (3 , 1 , 300 , "Heineken 600ml", 324) ');
     await db.rawInsert(

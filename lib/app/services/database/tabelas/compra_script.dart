@@ -7,7 +7,7 @@ povoarCompraValoresDefault() async {
 
   try {
     await db.rawInsert(
-        'insert into ${ConstantesApp.i.nomeTabelaCompras} (${ConstantesApp.i.campoIdTabelaCompras}, ${ConstantesApp.i.campoDataTabelaCompras}, ${ConstantesApp.i.campoLocalTabelaCompras} ) values (1 , 2021.10.10, "Assai Atacadista") ');
+        'insert into ${ConstantesApp.i.nomeTabelaCompras} (${ConstantesApp.i.campoIdTabelaCompras},  ${ConstantesApp.i.campoLocalTabelaCompras} ) values (1 ,  "Assai Atacadista") ');
   } on Exception catch (e) {
     throw ('Erro ao povoar tabela ${ConstantesApp.i.nomeTabelaCompras}');
   }
